@@ -1,0 +1,45 @@
+<template>
+    <lightning-tabset variant="scoped">
+        <template if:true={boats}>
+            <lightning-tab label="Gallery">
+                <div class="slds-scrollable_y">
+                    <!-- layout horizontally aligned to the center  -->
+                    <!-- layout allowing multiple rows -->
+                    <lightning-layout multiple-rows horizontal-align="slds-grid_align-center">
+                        <!-- template looping through each boat -->
+                        <template for:each={boats} for:item="boat">
+                            <lightning-layout-item key={boat.Id} size="12" large-device-size="3" medium-device-size="4"
+                                small-device-size="6" padding="around-small" flexibility="auto"
+                                class="slds-p-horizontal_xx-small">
+                                <c-boat-tile boat={boat} selected-boat-id={selectedBoatId}
+                                    onboatselect={updateSelectedTile}>></c-boat-tile>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Boat Editor">
+                <!-- Scrollable div and lightning datatable go here -->
+                <div class='slds-scrollable_y'>
+                    <lightning-layout multiple-rows class="slds-grid_align-center">
+                        <lightning-datatable key-field='Id' data={boats} columns={columns} onsave={handleSave}
+                            draft-values={draftValues} hide-checkbox-column=true>
+                        </lightning-datatable>
+                    </lightning-layout>
+                </div>
+            </lightning-tab>
+
+            <lightning-tab label="Boats Near Me">
+                <!-- boatsNearMe component goes here -->
+                <c-boats-near-me boat-type-id={boatTypeId}></c-boats-near-me>
+            </lightning-tab>
+        </template>
+        <template if:false={boats}>
+            <lightning-layout-item class="slds-align_absolute-center">
+                <ui:outputText>No boats found</ui:outputText>
+            </lightning-layout-item>
+        </template>
+    </lightning-tabset>
+
+</template>
